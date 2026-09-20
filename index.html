@@ -36,7 +36,7 @@
       margin-bottom: 25px;
     }
 
-    .start-screen p {
+    .screen p {
       font-size: 18px;
       line-height: 1.5;
     }
@@ -47,6 +47,45 @@
       border: none;
     }
 
+    /* DOMOV */
+
+    .home-button {
+      display: block;
+      margin: 5px auto 20px;
+      padding: 9px 16px;
+      border-radius: 10px;
+      background: #eee;
+      color: #555;
+      font-size: 15px;
+    }
+
+    .home-button:hover {
+      background: #e3e3e3;
+    }
+
+    /* JAZYK */
+
+    .language-title {
+      font-size: 18px;
+      margin: 25px 0 12px;
+      font-weight: bold;
+    }
+
+    .language button {
+      padding: 12px 22px;
+      margin: 5px;
+      border-radius: 10px;
+      background: #eee;
+      color: #444;
+      font-size: 17px;
+    }
+
+    .language button.active {
+      background: #7aa67a;
+      color: white;
+    }
+
+    .continue-button,
     .start-button {
       padding: 14px 28px;
       border-radius: 12px;
@@ -54,8 +93,10 @@
       font-weight: bold;
       background: #7aa67a;
       color: white;
-      margin-top: 20px;
+      margin-top: 25px;
     }
+
+    /* NÁROČNOSŤ */
 
     .difficulty {
       margin: 25px 0 10px;
@@ -89,6 +130,10 @@
     }
 
     .game {
+      display: none;
+    }
+
+    #setupScreen {
       display: none;
     }
 
@@ -179,6 +224,8 @@
       }
     }
 
+    /* MOBIL */
+
     @media (max-width: 600px) {
 
       .container {
@@ -188,6 +235,11 @@
 
       h1 {
         font-size: 25px;
+      }
+
+      .home-button {
+        font-size: 14px;
+        padding: 8px 14px;
       }
 
       .target {
@@ -209,7 +261,8 @@
         border-radius: 14px;
       }
 
-      .difficulty button {
+      .difficulty button,
+      .language button {
         padding: 10px 12px;
         font-size: 14px;
       }
@@ -221,9 +274,11 @@
 
   <div class="container">
 
-    <!-- ÚVODNÁ OBRAZOVKA -->
+    <!-- =========================
+         1. OBRAZOVKA – JAZYK
+    ========================== -->
 
-    <div class="start-screen" id="startScreen">
+    <div class="screen" id="languageScreen">
 
       <h1>🧩 Nájdi rovnaký obrázok</h1>
 
@@ -231,26 +286,73 @@
         BrainPlayMemory
       </div>
 
-      <p>
+      <p id="languageInstruction">
+        Vyber si jazyk hry.
+      </p>
+
+      <div class="language-title" id="languageTitle">
+        Jazyk hry:
+      </div>
+
+      <div class="language">
+
+        <button class="active" data-language="sk">
+          SK
+        </button>
+
+        <button data-language="en">
+          EN
+        </button>
+
+        <button data-language="it">
+          IT
+        </button>
+
+      </div>
+
+      <button class="continue-button" id="continueButton">
+        Pokračovať
+      </button>
+
+    </div>
+
+
+    <!-- =========================
+         2. OBRAZOVKA – NASTAVENIE
+    ========================== -->
+
+    <div class="screen" id="setupScreen">
+
+      <button class="home-button" id="setupHomeButton">
+        ← Domov
+      </button>
+
+      <h1>🧩 Nájdi rovnaký obrázok</h1>
+
+      <div class="subtitle">
+        BrainPlayMemory
+      </div>
+
+      <p id="instruction">
         Pozri sa pozorne a vyber obrázok,<br>
         ktorý je rovnaký.
       </p>
 
       <div class="difficulty">
 
-        <div class="difficulty-title">
+        <div class="difficulty-title" id="difficultyTitle">
           Vyber si náročnosť:
         </div>
 
-        <button class="active" data-level="3">
+        <button class="active" data-level="3" id="easyButton">
           🟢 Ľahká – 3
         </button>
 
-        <button data-level="4">
+        <button data-level="4" id="mediumButton">
           🟡 Stredná – 4
         </button>
 
-        <button data-level="5">
+        <button data-level="5" id="hardButton">
           🔴 Ťažká – 5
         </button>
 
@@ -265,9 +367,15 @@
     </div>
 
 
-    <!-- HRA -->
+    <!-- =========================
+         3. OBRAZOVKA – HRA
+    ========================== -->
 
     <div class="game" id="game">
+
+      <button class="home-button" id="gameHomeButton">
+        ← Domov
+      </button>
 
       <h1>🧩 Nájdi rovnaký obrázok</h1>
 
@@ -275,7 +383,7 @@
         Úloha 1 z 10
       </div>
 
-      <div class="target-label">
+      <div class="target-label" id="targetLabel">
         Ktorý obrázok je rovnaký?
       </div>
 
@@ -292,6 +400,174 @@
 
   <script>
 
+    /* =========================
+       PREKLADY
+    ========================== */
+
+    const translations = {
+
+      sk: {
+        languageInstruction: "Vyber si jazyk hry.",
+        languageTitle: "Jazyk hry:",
+        continue: "Pokračovať",
+
+        home: "← Domov",
+
+        instruction:
+          "Pozri sa pozorne a vyber obrázok,<br>ktorý je rovnaký.",
+
+        difficultyTitle:
+          "Vyber si náročnosť:",
+
+        easy:
+          "🟢 Ľahká – 3",
+
+        medium:
+          "🟡 Stredná – 4",
+
+        hard:
+          "🔴 Ťažká – 5",
+
+        start:
+          "▶ Začni hru",
+
+        question:
+          "Úloha",
+
+        of:
+          "z",
+
+        targetLabel:
+          "Ktorý obrázok je rovnaký?",
+
+        correct:
+          "⭐ Správne!",
+
+        tryAgain:
+          "🔄 Skús ešte raz",
+
+        result:
+          "Výsledok",
+
+        excellent:
+          "🎉 Výborne! Vyriešil/a si všetkých 10 úloh!"
+      },
+
+
+      en: {
+        languageInstruction:
+          "Choose your game language.",
+
+        languageTitle:
+          "Game language:",
+
+        continue:
+          "Continue",
+
+        home:
+          "← Home",
+
+        instruction:
+          "Look carefully and choose the picture<br>that is the same.",
+
+        difficultyTitle:
+          "Choose difficulty:",
+
+        easy:
+          "🟢 Easy – 3",
+
+        medium:
+          "🟡 Medium – 4",
+
+        hard:
+          "🔴 Hard – 5",
+
+        start:
+          "▶ Start Game",
+
+        question:
+          "Question",
+
+        of:
+          "of",
+
+        targetLabel:
+          "Which picture is the same?",
+
+        correct:
+          "⭐ Correct!",
+
+        tryAgain:
+          "🔄 Try again",
+
+        result:
+          "Score",
+
+        excellent:
+          "🎉 Excellent! You solved all 10 questions!"
+      },
+
+
+      it: {
+        languageInstruction:
+          "Scegli la lingua del gioco.",
+
+        languageTitle:
+          "Lingua del gioco:",
+
+        continue:
+          "Continua",
+
+        home:
+          "← Home",
+
+        instruction:
+          "Guarda attentamente e scegli l'immagine<br>che è uguale.",
+
+        difficultyTitle:
+          "Scegli la difficoltà:",
+
+        easy:
+          "🟢 Facile – 3",
+
+        medium:
+          "🟡 Media – 4",
+
+        hard:
+          "🔴 Difficile – 5",
+
+        start:
+          "▶ Inizia il gioco",
+
+        question:
+          "Domanda",
+
+        of:
+          "di",
+
+        targetLabel:
+          "Quale immagine è uguale?",
+
+        correct:
+          "⭐ Corretto!",
+
+        tryAgain:
+          "🔄 Riprova",
+
+        result:
+          "Risultato",
+
+        excellent:
+          "🎉 Ottimo! Hai risolto tutte e 10 le domande!"
+      }
+
+    };
+
+
+    /* =========================
+       ZÁKLADNÉ ÚDAJE
+    ========================== */
+
     const animals = [
       "🐶",
       "🐱",
@@ -305,20 +581,37 @@
 
     const totalQuestions = 10;
 
+    let currentLanguage = "sk";
     let level = 3;
     let question = 0;
     let score = 0;
     let currentAnimal = "";
 
 
-    const startScreen =
-      document.getElementById("startScreen");
+    /* =========================
+       PRVKY STRÁNKY
+    ========================== */
+
+    const languageScreen =
+      document.getElementById("languageScreen");
+
+    const setupScreen =
+      document.getElementById("setupScreen");
 
     const game =
       document.getElementById("game");
 
+    const continueButton =
+      document.getElementById("continueButton");
+
     const startButton =
       document.getElementById("startButton");
+
+    const setupHomeButton =
+      document.getElementById("setupHomeButton");
+
+    const gameHomeButton =
+      document.getElementById("gameHomeButton");
 
     const target =
       document.getElementById("target");
@@ -335,11 +628,176 @@
     const lastResult =
       document.getElementById("lastResult");
 
+    const languageInstruction =
+      document.getElementById("languageInstruction");
+
+    const languageTitle =
+      document.getElementById("languageTitle");
+
+    const instruction =
+      document.getElementById("instruction");
+
+    const difficultyTitle =
+      document.getElementById("difficultyTitle");
+
+    const targetLabel =
+      document.getElementById("targetLabel");
+
+    const easyButton =
+      document.getElementById("easyButton");
+
+    const mediumButton =
+      document.getElementById("mediumButton");
+
+    const hardButton =
+      document.getElementById("hardButton");
+
     const difficultyButtons =
       document.querySelectorAll(".difficulty button");
 
+    const languageButtons =
+      document.querySelectorAll(".language button");
 
-    /* VÝBER NÁROČNOSTI */
+    const titles =
+      document.querySelectorAll("h1");
+
+
+    /* =========================
+       VÝBER JAZYKA
+    ========================== */
+
+    languageButtons.forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        languageButtons.forEach(b =>
+          b.classList.remove("active")
+        );
+
+        button.classList.add("active");
+
+        currentLanguage =
+          button.dataset.language;
+
+        updateLanguage();
+
+      });
+
+    });
+
+
+    /* =========================
+       AKTUALIZÁCIA JAZYKA
+    ========================== */
+
+    function updateLanguage() {
+
+      const t =
+        translations[currentLanguage];
+
+      document.documentElement.lang =
+        currentLanguage;
+
+      languageInstruction.innerHTML =
+        t.languageInstruction;
+
+      languageTitle.textContent =
+        t.languageTitle;
+
+      continueButton.textContent =
+        t.continue;
+
+      setupHomeButton.textContent =
+        t.home;
+
+      gameHomeButton.textContent =
+        t.home;
+
+      instruction.innerHTML =
+        t.instruction;
+
+      difficultyTitle.textContent =
+        t.difficultyTitle;
+
+      easyButton.textContent =
+        t.easy;
+
+      mediumButton.textContent =
+        t.medium;
+
+      hardButton.textContent =
+        t.hard;
+
+      startButton.textContent =
+        t.start;
+
+      targetLabel.textContent =
+        t.targetLabel;
+
+      titles.forEach(title => {
+
+        title.textContent =
+          "🧩 " +
+          (
+            currentLanguage === "sk"
+              ? "Nájdi rovnaký obrázok"
+              : currentLanguage === "en"
+                ? "Find the Same Picture"
+                : "Trova l'immagine uguale"
+          );
+
+      });
+
+    }
+
+
+    /* =========================
+       POKRAČOVAŤ PO VÝBERE JAZYKA
+    ========================== */
+
+    continueButton.addEventListener(
+      "click",
+      () => {
+
+        languageScreen.style.display =
+          "none";
+
+        setupScreen.style.display =
+          "block";
+
+      }
+    );
+
+
+    /* =========================
+       DOMOV – Z NASTAVENIA
+       SPÄŤ NA VÝBER JAZYKA
+    ========================== */
+
+    setupHomeButton.addEventListener(
+      "click",
+      () => {
+
+        removeConfetti();
+
+        setupScreen.style.display =
+          "none";
+
+        game.style.display =
+          "none";
+
+        languageScreen.style.display =
+          "block";
+
+        lastResult.textContent = "";
+
+      }
+    );
+
+
+    /* =========================
+       VÝBER NÁROČNOSTI
+    ========================== */
 
     difficultyButtons.forEach(button => {
 
@@ -351,16 +809,22 @@
 
         button.classList.add("active");
 
-        level = Number(button.dataset.level);
+        level =
+          Number(button.dataset.level);
 
       });
 
     });
 
 
-    /* ZAČNI HRU */
+    /* =========================
+       ZAČNI HRU
+    ========================== */
 
-    startButton.addEventListener("click", startGame);
+    startButton.addEventListener(
+      "click",
+      startGame
+    );
 
 
     function startGame() {
@@ -372,44 +836,79 @@
 
       lastResult.textContent = "";
 
-      startScreen.style.display = "none";
+      setupScreen.style.display =
+        "none";
 
-      game.style.display = "block";
+      game.style.display =
+        "block";
 
       newQuestion();
 
     }
 
 
-    /* NOVÁ ÚLOHA */
+    /* =========================
+       DOMOV – POČAS HRY
+       SPÄŤ NA NASTAVENIE
+    ========================== */
+
+    gameHomeButton.addEventListener(
+      "click",
+      () => {
+
+        removeConfetti();
+
+        question = 0;
+        score = 0;
+        message.textContent = "";
+
+        game.style.display =
+          "none";
+
+        setupScreen.style.display =
+          "block";
+
+      }
+    );
+
+
+    /* =========================
+       NOVÁ ÚLOHA
+    ========================== */
 
     function newQuestion() {
 
       message.textContent = "";
 
+      const t =
+        translations[currentLanguage];
+
       progress.textContent =
-        `Úloha ${question + 1} z ${totalQuestions}`;
+        `${t.question} ${question + 1} ${t.of} ${totalQuestions}`;
 
       choices.innerHTML = "";
 
-
       const shuffledAnimals =
-        [...animals].sort(() => Math.random() - 0.5);
-
+        [...animals].sort(
+          () => Math.random() - 0.5
+        );
 
       const selected =
-        shuffledAnimals.slice(0, level);
-
+        shuffledAnimals.slice(
+          0,
+          level
+        );
 
       currentAnimal =
         selected[
-          Math.floor(Math.random() * selected.length)
+          Math.floor(
+            Math.random() *
+            selected.length
+          )
         ];
-
 
       target.textContent =
         currentAnimal;
-
 
       selected
         .sort(() => Math.random() - 0.5)
@@ -418,17 +917,21 @@
           const button =
             document.createElement("button");
 
-          button.className = "choice";
+          button.className =
+            "choice";
 
-          button.textContent = animal;
+          button.textContent =
+            animal;
 
-
-          button.addEventListener("click", () => {
-
-            checkAnswer(button, animal);
-
-          });
-
+          button.addEventListener(
+            "click",
+            () => {
+              checkAnswer(
+                button,
+                animal
+              );
+            }
+          );
 
           choices.appendChild(button);
 
@@ -437,35 +940,48 @@
     }
 
 
-    /* KONTROLA ODPOVEDE */
+    /* =========================
+       KONTROLA ODPOVEDE
+    ========================== */
 
-    function checkAnswer(button, animal) {
+    function checkAnswer(
+      button,
+      animal
+    ) {
 
       const allButtons =
-        document.querySelectorAll(".choice");
-
+        document.querySelectorAll(
+          ".choice"
+        );
 
       allButtons.forEach(b => {
         b.disabled = true;
       });
 
+      const t =
+        translations[currentLanguage];
 
-      if (animal === currentAnimal) {
+      if (
+        animal === currentAnimal
+      ) {
 
-        button.classList.add("correct");
+        button.classList.add(
+          "correct"
+        );
 
         message.textContent =
-          "⭐ Správne!";
+          t.correct;
 
         score++;
-
 
         setTimeout(() => {
 
           question++;
 
-
-          if (question >= totalQuestions) {
+          if (
+            question >=
+            totalQuestions
+          ) {
 
             showResult();
 
@@ -477,17 +993,14 @@
 
         }, 900);
 
-
       } else {
 
         message.textContent =
-          "🔄 Skús ešte raz";
-
+          t.tryAgain;
 
         allButtons.forEach(b => {
           b.disabled = false;
         });
-
 
         button.disabled = true;
 
@@ -496,55 +1009,69 @@
     }
 
 
-    /* KONIEC HRY */
+    /* =========================
+       KONIEC HRY
+    ========================== */
 
     function showResult() {
 
-      game.style.display = "none";
+      game.style.display =
+        "none";
 
-      startScreen.style.display = "block";
+      setupScreen.style.display =
+        "block";
 
+      const t =
+        translations[currentLanguage];
 
-      lastResult.textContent =
-        `Výsledok: ${score} z ${totalQuestions}`;
-
-
-      if (score === totalQuestions) {
+      if (
+        score === totalQuestions
+      ) {
 
         lastResult.textContent =
-          "🎉 Výborne! Vyriešil/a si všetkých 10 úloh!";
+          t.excellent;
 
         createConfetti();
+
+      } else {
+
+        lastResult.textContent =
+          `${t.result}: ${score} ${t.of} ${totalQuestions}`;
 
       }
 
     }
 
 
-    /* KONFETY */
+    /* =========================
+       KONFETY
+    ========================== */
 
     function createConfetti() {
 
       const pieces = 100;
 
-
-      for (let i = 0; i < pieces; i++) {
+      for (
+        let i = 0;
+        i < pieces;
+        i++
+      ) {
 
         const confetti =
           document.createElement("div");
 
-
         confetti.className =
           "confetti";
 
-
         confetti.style.left =
-          Math.random() * 100 + "vw";
-
+          Math.random() * 100 +
+          "vw";
 
         confetti.style.animationDuration =
-          (2 + Math.random() * 3) + "s";
-
+          (
+            2 +
+            Math.random() * 3
+          ) + "s";
 
         confetti.style.background =
           [
@@ -555,29 +1082,34 @@
             "#d98b8b",
             "#b49ad9"
           ][
-            Math.floor(Math.random() * 6)
+            Math.floor(
+              Math.random() * 6
+            )
           ];
-
 
         confetti.style.transform =
           `rotate(${Math.random() * 360}deg)`;
 
-
-        document.body.appendChild(confetti);
+        document.body.appendChild(
+          confetti
+        );
 
       }
 
     }
 
 
-    /* ODSTRÁNENIE KONFET */
+    /* =========================
+       ODSTRÁNENIE KONFET
+    ========================== */
 
     function removeConfetti() {
 
       document
         .querySelectorAll(".confetti")
-        .forEach(confetti =>
-          confetti.remove()
+        .forEach(
+          confetti =>
+            confetti.remove()
         );
 
     }
