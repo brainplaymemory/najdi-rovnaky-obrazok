@@ -283,7 +283,7 @@
 
     <div class="screen" id="languageScreen">
 
-      <h1>🧩 Nájdi rovnaký obrázok</h1>
+      <h1>🧩 Nájdi rovnaký obrázok – Zvieratká</h1>
 
       <div class="subtitle">
         BrainPlayMemory
@@ -760,17 +760,17 @@ const recommendedGames =
 
       titles.forEach(title => {
 
-        title.textContent =
-          "🧩 " +
-          (
-            currentLanguage === "sk"
-              ? "Nájdi rovnaký obrázok"
-              : currentLanguage === "en"
-                ? "Find the Same Picture"
-                : "Trova l'immagine uguale"
-          );
+  title.textContent =
+    "🧩 " +
+    (
+      currentLanguage === "sk"
+        ? "Nájdi rovnaký obrázok – Zvieratká"
+        : currentLanguage === "en"
+          ? "Find the Same Picture – Animals"
+          : "Trova l'immagine uguale – Animali"
+    );
 
-      });
+});
 
     }
 
